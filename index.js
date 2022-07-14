@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require('path');
 
 inquirer.prompt([ 
     {
@@ -15,7 +16,7 @@ inquirer.prompt([
     {
         type: "input",
         name:"usage",
-        message: "'What is the usage information of this project?",
+        message: "What is the usage information of this project?",
     },
     {
         type: "list",
@@ -35,11 +36,6 @@ inquirer.prompt([
     },
     {
         type: "input",
-        name:"contributionGuidelines",
-        message: "Is there any contribution guidelines:",
-    },
-    {
-        type: "input",
         name:"githubName",
         message: "What is your GitHub username?",
     }, {
@@ -52,10 +48,9 @@ inquirer.prompt([
     let file =  `
 # ${projectName}
 
-## Content
 Navigation  
  ---------------- 
- [1. Desciption](###Desciption) 
+ [1. Desciption](#Desciption) 
 
  [2. Usage](#Usage)         
  
@@ -89,13 +84,23 @@ ${githubName}
 
 ### What is your link to your github URL 
 [GitHub URL](${githubURL})
+
+
+---
+&copy; README File generator made by Aditya Gaikwad
 `;
 
-    fs.writeFile("README.md", file  , err => {
+    fs.mkdir(path.join(__dirname, 'output'), (err) => {
         if (err) {
-        console.error(err); }
-
-    })
-
+            return console.error(err);
+        }
+        console.log('Directory created successfully!');
+        fs.writeFile("output/README.md", file  , err => {
+            if (err) {
+            console.error(err); }
+    
+        })
+        console.log("\x1b[33m%s\x1b[0m", "Check The Output Folder To Get Your README.md File");
+    });
 })
  
